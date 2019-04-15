@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import { AuthContext } from "./context";
+import Record from "./record";
 
 class Dashboard extends Component {
   state = {};
-
-  constructor(props) {
-    super(props);
-    // console.log(Cookies.get("token"));
-  }
 
   render() {
     return (
       <AuthContext.Consumer>
         {value => {
           return value.isAuthenticated() ? (
-            <div>Hello App</div>
+            <Record />
           ) : (
             <a href="https://slack.com/oauth/authorize?scope=identity.basic,identity.email,identity.avatar&client_id=594723647687.596199046978">
               <img

@@ -6,7 +6,8 @@ const HOST_CALLS = {
   hostStart: "S",
   hostEnd: "AF",
   callStart: "B",
-  callEnd: "R"
+  callEnd: "R",
+  nextRow: 5
 };
 
 const STUDENT_HOST_CALLS = {
@@ -17,7 +18,8 @@ const STUDENT_HOST_CALLS = {
   hostStart: "W",
   hostEnd: "AF",
   callStart: "B",
-  callEnd: "V"
+  callEnd: "V",
+  nextRow: 5
 };
 
 const BILINGUAL_HOST_CALLS = {
@@ -28,7 +30,8 @@ const BILINGUAL_HOST_CALLS = {
   hostStart: "S",
   hostEnd: "AG",
   callStart: "B",
-  callEnd: "R"
+  callEnd: "R",
+  nextRow: 5
 };
 
 module.exports = {
