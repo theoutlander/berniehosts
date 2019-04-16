@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm run client-build && npm run server",
+    "build": "npm run client-build",
+    "client-build": "parcel build ./src/index.html",
     "client-watch": "parcel watch ./src/index.html",
+    "server": "node ./src/server/server.js",
     "server-watch": "nodemon ./src/server/server.js",
     "server-watch-debug": "nodemon --inspect ./src/server/server.js"
   },

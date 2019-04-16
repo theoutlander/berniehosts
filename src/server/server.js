@@ -25,6 +25,11 @@ sheet.init().then(async () => {
   // console.log("call details", sheet.getCallDetails(row, SHEETS.HOST_CALLS));
 });
 
+app.use((req, res, next) => {
+  console.log(req.url, req.params, req.body);
+  next();
+});
+
 // parse application/json
 app.use(bodyParser.json());
 app.use(
@@ -39,12 +44,14 @@ app.use(
 app.use(cookieParser());
 app.use(express.static("dist"));
 app.get("/oauth", (req, res, next) => {
+  console.log(req.url);
   // call slack to get token
   slack.oauth
     .access({
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
-      code: req.query.code
+      code: req.query.code,
+      redirect_url: process.env.SLACK_REDIRECT_URI
     })
     .then(response => {
       let { access_token } = response;
@@ -62,7 +69,7 @@ app.get("/oauth", (req, res, next) => {
                 response.channels.filter(i => i.name === "event-support-team")
                   .length === 1
               ) {
-                res.cookie("token", access_token);
+                res.cookie("token", "access_token");
                 res.redirect("/");
               } else {
                 res.status(403).end();
