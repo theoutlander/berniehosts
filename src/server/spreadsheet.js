@@ -221,6 +221,7 @@ class Spreadsheet {
   // }
 
   getStructuredData(header, row, num) {
+    debugger;
     let sheet = this.callSheet;
     let result = {
       row: {},
@@ -239,13 +240,17 @@ class Spreadsheet {
     let hostHeaderDetails = this.getHostDetails(header, sheet);
 
     for (let i = 0; i < hostHeaderDetails.length; i++) {
-      result.hostDetails[hostHeaderDetails[i]] = hostRowDetails[i];
+      result.hostDetails[hostHeaderDetails[i]] = hostRowDetails[i]
+        ? hostRowDetails[i]
+        : "";
     }
 
     let callRowDetails = this.getCallDetails(row, sheet);
     let callHeaderDetails = this.getCallDetails(header, sheet);
     for (let i = 0; i < callHeaderDetails.length; i++) {
-      result.callDetails[callHeaderDetails[i]] = callRowDetails[i];
+      result.callDetails[callHeaderDetails[i]] = callRowDetails[i]
+        ? callRowDetails[i]
+        : "";
     }
 
     result.callerDetails = {
@@ -271,7 +276,7 @@ class Spreadsheet {
   getCallDetails(row) {
     let sheet = this.callSheet;
     let start = this.getColumnFromString(sheet.callStart);
-    let end = this.getColumnFromString(sheet.callEnd);
+    let end = this.getColumnFromString(sheet.callEnd) + 1;
     // console.log(start, end);
     return row.slice(start, end);
   }
@@ -279,7 +284,7 @@ class Spreadsheet {
   getHostDetails(row) {
     let sheet = this.callSheet;
     let start = this.getColumnFromString(sheet.hostStart);
-    let end = this.getColumnFromString(sheet.hostEnd);
+    let end = this.getColumnFromString(sheet.hostEnd) + 1;
     // console.log(start, end);
     return row.slice(start, end);
   }

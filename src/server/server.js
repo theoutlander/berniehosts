@@ -78,6 +78,7 @@ app.get("/oauth", (req, res, next) => {
 });
 
 app.get("/api/nextrow", async (req, res, next) => {
+  debugger;
   let index = sheet.getNextRowIndex();
   let row = await sheet.getStructuredRow(index);
   res.json(row);
