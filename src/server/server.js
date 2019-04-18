@@ -1,4 +1,12 @@
-require("dotenv").config();
+console.log(process.env.NODE_ENV);
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ path: ".env.development" });
+} else {
+  require("dotenv").config({ path: ".env.production" });
+}
+
+console.log(process.env.SLACK_REDIRECT_URI);
 
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
@@ -6,7 +14,7 @@ const bodyParser = require("body-parser");
 const Keygrip = require("keygrip");
 const express = require("express");
 const app = express();
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 // const superagent = require("superagent");
 const slack = require("slack");
 const Sheet = require("./spreadsheet");
@@ -26,8 +34,12 @@ sheet.init().then(async () => {
 });
 
 app.use((req, res, next) => {
-  console.log(req.url, req.params, req.body);
+  console.log(req.hostname, req.url, req.query, req.params, req.body);
   next();
+});
+
+app.get("/print", (req, res, next) => {
+  res.json(process.env);
 });
 
 // parse application/json
@@ -44,44 +56,46 @@ app.use(
 app.use(cookieParser());
 app.use(express.static("dist"));
 app.get("/oauth", (req, res, next) => {
-  console.log(req.url);
-  // call slack to get token
-  slack.oauth
-    .access({
-      client_id: process.env.CLIENT_ID,
-      client_secret: process.env.CLIENT_SECRET,
-      code: req.query.code,
-      redirect_url: process.env.SLACK_REDIRECT_URI
-    })
-    .then(response => {
-      let { access_token } = response;
+  // console.log(req.url);
+  let params = {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
+    code: req.query.code,
+    redirect_uri: process.env.SLACK_REDIRECT_URI
+  };
 
-      if (access_token) {
-        slack.conversations
-          .list({
-            token: access_token,
-            exclude_archived: true,
-            types: "private_channel"
-          })
-          .then(response => {
-            if (response.channels) {
-              if (
-                response.channels.filter(i => i.name === "event-support-team")
-                  .length === 1
-              ) {
-                res.cookie("token", "access_token");
-                res.redirect("/");
-              } else {
-                res.status(403).end();
-              }
+  console.log(params);
+
+  // call slack to get token
+  slack.oauth.access(params).then(response => {
+    let { access_token } = response;
+
+    if (access_token) {
+      slack.conversations
+        .list({
+          token: access_token,
+          exclude_archived: true,
+          types: "private_channel"
+        })
+        .then(response => {
+          if (response.channels) {
+            if (
+              response.channels.filter(i => i.name === "event-support-team")
+                .length === 1
+            ) {
+              res.cookie("token", "access_token");
+              res.redirect("/");
             } else {
               res.status(403).end();
             }
-          });
-      } else {
-        res.status(403).end();
-      }
-    });
+          } else {
+            res.status(403).end();
+          }
+        });
+    } else {
+      res.status(403).end();
+    }
+  });
 });
 
 app.get("/api/nextrow", async (req, res, next) => {

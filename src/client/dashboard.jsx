@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { AuthContext } from "./context";
 import Record from "./record";
 
+const CLIENT_ID = process.env.CLIENT_ID;
+
 class Dashboard extends Component {
   state = {};
 
@@ -12,7 +14,9 @@ class Dashboard extends Component {
           return value.isAuthenticated() ? (
             <Record />
           ) : (
-            <a href="https://slack.com/oauth/authorize?scope=identity.basic,identity.email,identity.avatar&client_id=594723647687.596199046978">
+            <a
+              href={`https://slack.com/oauth/authorize?scope=identity.basic,identity.email,identity.avatar&client_id=${CLIENT_ID}`}
+            >
               <img
                 alt="Sign in with Slack"
                 height="40"

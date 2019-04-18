@@ -1,0 +1,14 @@
+#!/bin/sh
+
+echo "Switching to branch master"
+git checkout master
+
+echo "Building app"
+echo npm run build
+
+npm run clean
+echo "Deploying files to server"
+rsync -avP ./ root@li727-192.members.linode.com:/var/www/berniehosts.karnik.io/
+echo "Deployment complete"
+
+echo scp -r ~/gh/theoutlander/berniehosts root@li727-192.members.linode.com:/var/www/berniehosts.karnik.io

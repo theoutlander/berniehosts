@@ -19,6 +19,9 @@ import FormHelper from "./form.helper";
 // "Host Event Edit Link ": ""
 // }
 
+// Make fields hidden
+// Conditionally display fields
+// Include script
 const FIELDS = [
   [{ header: "First Name" }, { header: "Last Name" }],
   [{ header: "Phone" }, { header: "Email" }],
@@ -28,7 +31,10 @@ const FIELDS = [
     { header: "Event State" },
     { header: "Event Zip" }
   ],
-  [{ header: "Capacity Count" }, { header: "Approved?" }],
+  [
+    { header: "Capacity Count" },
+    { header: "Approved?", options: ["Yes", "No"] }
+  ],
   [{ header: "Event ID", readonly: true }, { header: "Event Creation Date" }],
   [
     { header: "Public Event Signup Link", readonly: true },
