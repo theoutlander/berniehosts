@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 80;
 const slack = require("slack");
 const Sheet = require("./spreadsheet");
 const SHEETS = require("./sheets");
-const sheet = new Sheet(SHEETS.HOST_CALLS);
+const sheet = new Sheet(SHEETS.ALL_HOST_CALLS);
 
 sheet.init().then(async () => {
   // let header = await sheet.getHeader();

@@ -20,62 +20,109 @@ import FormHelper from "./form.helper";
 // Time Zone: "Eastern"
 // Will they double their capacity # to account for folks who will RSVP but not make it ?: ""
 
+// const FIELDS = [
+//   [
+//     { header: "Date you called (use time below)" },
+//     { header: "Time Zone" },
+//     { header: "Call Result" }
+//   ],
+//   [
+//     { header: "Event Location Confirmed?" },
+//     { header: "Event Address Accurate?" }
+//   ],
+//   {
+//     header: "If NO, write correct address here"
+//   },
+//   [
+//     {
+//       header: "Livestream Tech Confirmed?"
+//     },
+//     {
+//       header: "Is the event ADA accessable?"
+//     }
+//   ],
+//   [
+//     {
+//       header:
+//         "Will they double their capacity # to account for folks who will RSVP but not make it?"
+//     },
+//     {
+//       header: "If YES, what # should their doubled event capacity be?"
+//     }
+//   ],
+//   [
+//     {
+//       header: "Signed up for webinar?"
+//     },
+//     {
+//       header: "If no, were you able to sign them up? (click for link)"
+//     }
+//   ],
+//   [
+//     {
+//       header: "Attended a webinar?"
+//     },
+//     {
+//       header: "Host Guide Received (via email)?"
+//     },
+//     {
+//       header: "Needs another Host Guide / Spanish Guide?"
+//     }
+//   ],
+//   {
+//     header: "Readiness Ranking"
+//   },
+//   {
+//     header: "Additional Notes",
+//     type: "textarea"
+//   }
+// ];
+
 const FIELDS = [
-  [
-    { header: "Date you called (use time below)" },
-    { header: "Time Zone" },
-    { header: "Call Result" }
-  ],
-  [
-    { header: "Event Location Confirmed?" },
-    { header: "Event Address Accurate?" }
-  ],
+  [{ header: "Call Result" }],
+  [{ header: "Location Confirmed?" }, { header: "Address We Have Correct?" }],
   {
-    header: "If NO, write correct address here"
+    header: "If NO: Correct Address"
   },
+  [{ header: "Time We Have Correct?" }, { header: "If NO: Correct Time" }],
   [
     {
-      header: "Livestream Tech Confirmed?"
+      header: "Tech Confirmed?"
     },
     {
-      header: "Is the event ADA accessable?"
+      header: "ADA accessable?"
     }
   ],
   [
     {
-      header:
-        "Will they double their capacity # to account for folks who will RSVP but not make it?"
+      header: "Will double event capacity?"
     },
     {
-      header: "If YES, what # should their doubled event capacity be?"
+      header: "If YES, new capacity #"
     }
   ],
   [
     {
-      header: "Signed up for webinar?"
-    },
-    {
-      header: "If no, were you able to sign them up? (click for link)"
-    }
-  ],
-  [
-    {
-      header: "Attended a webinar?"
-    },
-    {
-      header: "Host Guide Received (via email)?"
-    },
-    {
-      header: "Needs another Host Guide / Spanish Guide?"
+      header: "Webinar Status (If not completed, click to sign them up)"
     }
   ],
   {
     header: "Readiness Ranking"
   },
   {
-    header: "Additional Notes",
+    header: "Notes",
     type: "textarea"
-  }
+  },
+  {
+    header: "Notes on Accessibility",
+    type: "textarea"
+  },
+  [
+    { header: "IF NO: School Name" },
+    { header: "Joined Student Slack?" },
+    { header: "School Name in Event Title? " },
+    { header: "Will the event be on campus?" }
+  ]
 ];
 
 class CallDetails extends Component {
@@ -90,7 +137,10 @@ class CallDetails extends Component {
         <Form size="huge">
           {FormHelper.renderInputs(
             this.props,
-            this.props.data.callDetails,
+            {
+              ...this.props.data.callDetails,
+              ...this.props.data.studentDetails
+            },
             FormHelper.handleChange.bind(
               this,
               this.props,

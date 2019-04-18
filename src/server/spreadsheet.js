@@ -15,7 +15,8 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const TOKEN_PATH = "token.json";
 
 // const SPREADSHEET_ID = "14BBXOF1KBCXzrijozMJR_cCVXaJffnuvwxbphbqVs9o"; // Prod sheet
-const SPREADSHEET_ID = "1QGJ_0yn5WGG4O3aI2Vmfm-eAhqQWnY0TBra8Fz9AQOQ"; // DEV sheet
+//const SPREADSHEET_ID = "1QGJ_0yn5WGG4O3aI2Vmfm-eAhqQWnY0TBra8Fz9AQOQ"; // DEV sheet
+const SPREADSHEET_ID = "1nkUvaJwM7PWA_BUM8Yj2eMwHNqPBDulViaN9CvtjHEc"; // NEW DEV SHEET ....need related PROD id
 
 class Spreadsheet {
   constructor(callSheet) {
@@ -34,15 +35,20 @@ class Spreadsheet {
         this.authorize(JSON.parse(content), async auth => {
           this.googleSheet = google.sheets({ version: "v4", auth });
 
+          // Get all the data in the first colunn of the sheet
           this.queue = await this.getColumn({
-            column: "A",
+            column: this.callSheet.rowStart,
             rowStart: 1,
             // rowEnd: 4000, // 3503
             // rowEnd: 3500, // 3467
-            rowEnd: 4500, // 3467
+            rowEnd: this.callSheet.totalRows, // 3467
             tabName: this.callSheet.tabName
           });
 
+          // console.log(this.queue[3]);
+
+          // Creater a key value pair with the value of the first column
+          // also shift row index values from 0 in arrow based to 1 based in spreadsheet
           this.queue = this.queue.map((name, row) => {
             return [
               name[0],
@@ -53,6 +59,7 @@ class Spreadsheet {
             ];
           });
 
+          debugger;
           this.header = await this.getHeader();
           // console.log(this.header);
 
@@ -228,6 +235,7 @@ class Spreadsheet {
       callerDetails: {},
       hostDetails: {},
       callDetails: {},
+      studentDetails: {},
       sheet,
       rowNum: num
     };
@@ -236,8 +244,8 @@ class Spreadsheet {
       result.row[header[i]] = row[i];
     }
 
-    let hostRowDetails = this.getHostDetails(row, sheet);
-    let hostHeaderDetails = this.getHostDetails(header, sheet);
+    let hostRowDetails = this.getHostDetails(row);
+    let hostHeaderDetails = this.getHostDetails(header);
 
     for (let i = 0; i < hostHeaderDetails.length; i++) {
       result.hostDetails[hostHeaderDetails[i]] = hostRowDetails[i]
@@ -245,32 +253,49 @@ class Spreadsheet {
         : "";
     }
 
-    let callRowDetails = this.getCallDetails(row, sheet);
-    let callHeaderDetails = this.getCallDetails(header, sheet);
+    let callRowDetails = this.getCallDetails(row);
+    let callHeaderDetails = this.getCallDetails(header);
     for (let i = 0; i < callHeaderDetails.length; i++) {
       result.callDetails[callHeaderDetails[i]] = callRowDetails[i]
         ? callRowDetails[i]
         : "";
     }
 
+    let studentRowDetails = this.getStudentDetails(row);
+    let studentHeaderDetails = this.getStudentDetails(header);
+    for (let i = 0; i < studentHeaderDetails.length; i++) {
+      result.studentDetails[studentHeaderDetails[i]] = studentRowDetails[i]
+        ? studentRowDetails[i]
+        : "";
+    }
+
     result.callerDetails = {
-      [header[0]]: row[0]
+      [header[0]]: row[0],
+      [header[1]]: row[1]
     };
 
     return result;
   }
 
-  getRowForHostCalls(num) {
-    return this.getRow({
-      num,
-      tabName: SHEETS.HOST_CALLS.tabName,
-      start: SHEETS.HOST_CALLS.rowStart,
-      end: SHEETS.HOST_CALLS.rowEnd
-    });
-  }
+  // getRowForHostCalls(num) {
+  //   return this.getRow({
+  //     num,
+  //     tabName: SHEETS.HOST_CALLS.tabName,
+  //     start: SHEETS.HOST_CALLS.rowStart,
+  //     end: SHEETS.HOST_CALLS.rowEnd
+  //   });
+  // }
 
   getColumnFromString(num) {
     return spreadsheetColumn.fromStr(num) - 1;
+  }
+
+  getStudentDetails(row) {
+    let sheet = this.callSheet;
+    let start = this.getColumnFromString(sheet.studentStart);
+    let end = this.getColumnFromString(sheet.studentEnd) + 1;
+    // console.log(start, end);
+    return row.slice(start, end);
   }
 
   getCallDetails(row) {

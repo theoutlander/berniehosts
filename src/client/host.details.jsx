@@ -22,6 +22,51 @@ import FormHelper from "./form.helper";
 // Make fields hidden
 // Conditionally display fields
 // Include script
+// const FIELDS = [
+//   [{ header: "First Name" }, { header: "Last Name" }],
+//   [{ header: "Phone" }, { header: "Email" }],
+//   { header: "Event Address" },
+//   [
+//     { header: "Event City" },
+//     { header: "Event State" },
+//     { header: "Event Zip" }
+//   ],
+//   [
+//     { header: "Capacity Count" },
+//     { header: "Approved?", options: ["Yes", "No"] }
+//   ],
+//   [{ header: "Event ID", readonly: true }, { header: "Event Creation Date" }],
+//   [
+//     { header: "Public Event Signup Link", readonly: true },
+//     { header: "Host Event Edit Link", readonly: true }
+//   ]
+// ];
+
+/*
+Approved?: "5047"
+Call Live: ""
+Capacity Count: "21"
+EVENT TITLE: ""
+Edits Sent:: "FALSE"
+Email: "Htormu@gmail.com"
+Event Address: ""
+Event City: "New York"
+Event Creation Date: "4/14/19 1:37 AM"
+Event Date: ""
+Event ID: ""
+Event Start Time: ""
+Event State: "NY"
+Event Type: "Default"
+Event Zip: "10025"
+First Name: "hudson"
+"Host Event Edit Link ": "[City, State]: Bernie 2020 Organizing Kickoff!"
+Host Time Zone: "Eastern"
+Last Name: "mckinley uss"
+Pass #: "2"
+Phone: "(646) 630-3989"
+Public Event Signup Link: ""
+*/
+
 const FIELDS = [
   [{ header: "First Name" }, { header: "Last Name" }],
   [{ header: "Phone" }, { header: "Email" }],
@@ -37,9 +82,20 @@ const FIELDS = [
   ],
   [{ header: "Event ID", readonly: true }, { header: "Event Creation Date" }],
   [
+    { header: "EVENT TITLE" },
+    { header: "Event Date" },
+    { header: "Event Start Time" }
+  ],
+  [{ header: "Event Type" }, { header: "Host Time Zone" }],
+  [
     { header: "Public Event Signup Link", readonly: true },
-    { header: "Host Event Edit Link", readonly: true }
-  ]
+    { header: "Host Event Edit Link ", readonly: true }
+  ],
+  [
+    { header: "Edits Sent:", hidden: true },
+    { header: "Call Live", hidden: true, readonly: true }
+  ],
+  [{ header: "Pass #" }]
 ];
 
 class HostDetails extends Component {
