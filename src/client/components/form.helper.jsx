@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Segment, Header, Form, Divider } from "semantic-ui-react";
+import { Segment, Header, Form, Dropdown } from "semantic-ui-react";
 
 class FormHelper {
   static handleChange = (props, data, header, e, { name, value }) => {
@@ -74,11 +74,33 @@ class FormHelper {
     );
   }
 
+  static renderOptions({ header, readonly, handleChange, data, options }) {
+    const optionsArr = options.map(i => {
+      return {
+        key: i,
+        value: i,
+        text: i
+      };
+    });
+    return (
+      <Form.Dropdown
+        fluid
+        key={header}
+        label={header}
+        selection
+        search
+        options={optionsArr}
+        onChange={!readonly ? handleChange.bind(this, header) : null}
+        readOnly={readonly}
+      />
+    );
+  }
+
   static renderInput = (
     props,
     data,
     handleChange,
-    { header, hidden = false, readonly = false, type = "text", show }
+    { header, hidden = false, readonly = false, type = "text", options, show }
   ) => {
     if (typeof data[header] === "undefined") {
       debugger;
@@ -94,10 +116,17 @@ class FormHelper {
       return null;
     }
 
-    let attributes = { header, readonly, handleChange, hidden, data };
+    if (options) {
+      // console.log(type + " changed to " + options);
+      type = "options";
+    }
+
+    let attributes = { header, readonly, handleChange, hidden, options, data };
     switch (type) {
       case "textarea":
         return FormHelper.renderTextArea(attributes);
+      case "options":
+        return FormHelper.renderOptions(attributes);
       default:
         return FormHelper.renderTextInput(attributes);
     }

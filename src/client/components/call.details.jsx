@@ -4,7 +4,10 @@ import FormHelper from "./form.helper";
 
 const FIELDS = [
   [{ header: "Call Result" }],
-  [{ header: "Location Confirmed?" }, { header: "Address We Have Correct?" }],
+  [
+    { header: "Location Confirmed?" },
+    { header: "Address We Have Correct?", options: ["Yes", "No"] }
+  ],
   {
     header: "If NO: Correct Address",
     show: {
