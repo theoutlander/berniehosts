@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { AuthContext } from "./context";
-import Record from "./record";
+import { AuthContext } from "../context";
+import Record from "../components/record";
 
 const CLIENT_ID = process.env.CLIENT_ID;
 

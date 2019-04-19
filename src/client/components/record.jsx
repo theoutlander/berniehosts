@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import serverApi from "./serverApi";
+import serverApi from "../api/serverApi";
 import HostDetails from "./host.details";
 import CallDetails from "./call.details";
 import { Segment, Form, Container, Grid } from "semantic-ui-react";

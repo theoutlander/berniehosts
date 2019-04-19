@@ -10,7 +10,7 @@ class FormHelper {
   };
 
   static renderInputs = (props, data, handleChange, FIELDS) => {
-    console.log(data);
+    // console.log(data);
     let inputs = FIELDS.map((f, i) => {
       if (Array.isArray(f)) {
         return (
