@@ -45,41 +45,56 @@ class FormHelper {
     return inputs;
   };
 
+  static renderTextArea({ header, readonly, handleChange, data }) {
+    return (
+      <Form.TextArea
+        // fluid
+        rows={8}
+        key={header}
+        label={header}
+        // placeholder={}
+        value={data[header]}
+        onChange={!readonly ? handleChange.bind(this, header) : null}
+        readOnly={readonly}
+      />
+    );
+  }
+
+  static renderTextInput({ header, readonly, handleChange, data }) {
+    return (
+      <Form.Input
+        fluid
+        key={header}
+        label={header}
+        // placeholder={}
+        value={data[header]}
+        onChange={!readonly ? handleChange.bind(this, header) : null}
+        readOnly={readonly}
+      />
+    );
+  }
+
   static renderInput = (
     props,
     data,
     handleChange,
-    { header, readonly = false, type = "text" }
+    { header, hidden = false, readonly = false, type = "text" }
   ) => {
     if (typeof data[header] === "undefined") {
       debugger;
     }
+
+    // IS this the best way to handle hidden?
+    if (hidden) {
+      return null;
+    }
+
+    let attributes = { header, readonly, handleChange, hidden, data };
     switch (type) {
       case "textarea":
-        return (
-          <Form.TextArea
-            // fluid
-            rows={8}
-            key={header}
-            label={header}
-            // placeholder={}
-            value={data[header]}
-            onChange={!readonly ? handleChange.bind(this, header) : null}
-            readOnly={readonly}
-          />
-        );
+        return FormHelper.renderTextArea(attributes);
       default:
-        return (
-          <Form.Input
-            fluid
-            key={header}
-            label={header}
-            // placeholder={}
-            value={data[header]}
-            onChange={!readonly ? handleChange.bind(this, header) : null}
-            readOnly={readonly}
-          />
-        );
+        return FormHelper.renderTextInput(attributes);
     }
   };
 }
