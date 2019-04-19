@@ -12,7 +12,7 @@ const FIELDS = [
     { header: "Event Zip" }
   ],
   [
-    { header: "Capacity Count" },
+    { header: "Capacity Count", datatype: "numeric" },
     { header: "Approved?", options: ["Yes", "No"] }
   ],
   [{ header: "Event ID", readonly: true }, { header: "Event Creation Date" }],
@@ -23,20 +23,25 @@ const FIELDS = [
   ],
   [{ header: "Event Type" }, { header: "Host Time Zone" }],
   [
-    { header: "Public Event Signup Link", readonly: true },
-    { header: "Host Event Edit Link ", readonly: true }
+    { header: "Public Event Signup Link", hidden: true, readonly: true },
+    { header: "Host Event Edit Link ", hidden: true, readonly: true }
   ],
   [
     { header: "Edits Sent:", hidden: true },
     { header: "Call Live", hidden: true, readonly: true }
   ],
-  [{ header: "Pass #" }]
+  [{ header: "Pass #", datatype: "numeric" }]
 ];
 
 class HostDetails extends Component {
   render() {
     return (
-      <Segment raised>
+      <Segment
+        raised
+        style={{
+          background: "lightcoral"
+        }}
+      >
         <Header textAlign="center" as="h3">
           Host Details
         </Header>

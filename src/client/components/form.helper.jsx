@@ -106,7 +106,7 @@ class FormHelper {
       debugger;
     }
 
-    if (show && data[show.header] === show.value) {
+    if (show && data[show.header] !== show.value) {
       // console.log(show, data);
       return null;
     }
