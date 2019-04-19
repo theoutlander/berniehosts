@@ -11,6 +11,7 @@ class Record extends Component {
 
   async componentDidMount() {
     let row = await serverApi.getNextRow();
+    console.log("display next row", row);
     this.setState({ loading: false, row });
   }
 
