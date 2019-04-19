@@ -78,14 +78,19 @@ class FormHelper {
     props,
     data,
     handleChange,
-    { header, hidden = false, readonly = false, type = "text" }
+    { header, hidden = false, readonly = false, type = "text", show }
   ) => {
     if (typeof data[header] === "undefined") {
       debugger;
     }
 
-    // IS this the best way to handle hidden?
+    if (show && data[show.header] === show.value) {
+      // console.log(show, data);
+      return null;
+    }
+
     if (hidden) {
+      // IS this the best way to handle hidden?
       return null;
     }
 
