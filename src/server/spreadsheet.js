@@ -74,7 +74,7 @@ class Spreadsheet {
     let next = this.nextRow;
     let index = this.queue.slice(next).findIndex(item => {
       // console.log(item[0]);
-      return typeof item[0] !== "string" && !item[1].locked;
+      return typeof item[0] !== "string";
     });
 
     this.nextRow = next + index + 1;
