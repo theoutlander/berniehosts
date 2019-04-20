@@ -4,7 +4,11 @@
 - NodeJS
 - React
 - ReactRouter
-- Hosted on Linode (Ubuntu w/Nginx)
+- Hosted on Linode (Ubuntu w/Nginx + PM2)
+
+# Request Access To
+[Development Copy of BERNIE 2020 EVENT SUPPORT HUB](https://docs.google.com/spreadsheets/d/1nkUvaJwM7PWA_BUM8Yj2eMwHNqPBDulViaN9CvtjHEc/edit?userstoinvite=dvdgeisert@gmail.com&ts=5cba6bf3&actionButton=1#gid=0)
+
 
 # Purpose
 Create a UI to make it easier for callers to easily find the next host to call and stay within a single screen where they can take notes and (optionally) follow the script. In addition, it should make things a bit easier to maintain for the campaign managers.
