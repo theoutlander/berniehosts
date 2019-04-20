@@ -62,8 +62,7 @@ class Spreadsheet {
           debugger;
           this.header = await this.getHeader();
           // console.log(this.header);
-
-          this.nextRow = this.getNextRowIndex();
+          this.getNextRowIndex();
           // console.log("Next row is set to ", this.nextRow);
           resolve();
         });
@@ -77,9 +76,10 @@ class Spreadsheet {
       // console.log(item[0]);
       return typeof item[0] !== "string";
     });
-    let nextRow = this.nextRow + index + 1;
+
+    this.nextRow = next + index + 1;
     // console.log("index", nextRow);
-    return nextRow;
+    return next;
   }
 
   getKeyOrder(data) {
@@ -136,6 +136,33 @@ class Spreadsheet {
           // const rows = res.data.values;
           // resolve(rows.length === 1 ? rows[0] : rows);
 
+          console.log(res);
+          resolve();
+        }
+      );
+    });
+  }
+
+  lockRow(rowNum) {
+    return new Promise((resolve, reject) => {
+      let range = `${this.callSheet.tabName}!${
+        this.callSheet.rowStart
+      }${rowNum}:${this.callSheet.rowStart}${rowNum}`;
+
+      this.googleSheet.spreadsheets.values.update(
+        {
+          spreadsheetId: SPREADSHEET_ID,
+          range,
+          valueInputOption: "USER_ENTERED",
+          resource: {
+            values: [["DONT EDIT"]]
+          }
+        },
+        (err, res) => {
+          if (err) {
+            console.log("The API returned an error: " + err);
+            return reject(err);
+          }
           console.log(res);
           resolve();
         }
