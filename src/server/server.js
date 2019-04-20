@@ -101,13 +101,16 @@ app.get("/oauth", (req, res, next) => {
 app.get("/api/nextrow", async (req, res, next) => {
   debugger;
   let index = sheet.getNextRowIndex();
+  await sheet.lockRow(index);
   let row = await sheet.getStructuredRow(index);
+
   res.json(row);
 });
 
 app.put("/api/row", (req, res, next) => {
   // console.log(req.body);
   sheet.updateRow({ data: req.body.data, rowNum: req.body.rowNum });
+
   res.send("DONE...");
 });
 
